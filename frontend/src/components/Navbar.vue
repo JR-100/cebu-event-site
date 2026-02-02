@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar" :class="{ 'scrolled': isScrolled }">
+  <nav class="navbar" :class="{ 'scrolled': isScrolled, 'solid-bg': !isHomePage }">
     <div class="navbar-container">
       <router-link to="/" class="navbar-brand">
         <span class="brand-text">Cebu Event Site</span>
@@ -32,10 +32,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
+
+const isHomePage = computed(() => route.path === '/');
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
@@ -59,12 +63,16 @@ onUnmounted(() => {
   z-index: 1000;
   padding: 1rem 2rem;
   transition: all 0.3s ease;
-  background: #1e3a4a;
+  background: transparent;
 }
 
 .navbar.scrolled {
   background: #1e3a4a;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.navbar.solid-bg {
+  background: #1e3a4a;
 }
 
 .navbar-container {
@@ -81,12 +89,14 @@ onUnmounted(() => {
   gap: 0.5rem;
   text-decoration: none;
   font-size: 1.25rem;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: #0ea5e9;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 .navbar.scrolled .navbar-brand {
-  color: white;
+  color: #0ea5e9;
+  text-shadow: none;
 }
 
 .navbar-menu {
@@ -105,8 +115,8 @@ onUnmounted(() => {
 
 .navbar-menu a {
   text-decoration: none;
-  color: white;
-  font-weight: 500;
+  color: #f0f9ff;
+  font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -115,7 +125,7 @@ onUnmounted(() => {
 }
 
 .navbar.scrolled .navbar-menu a {
-  color: white;
+  color: #f0f9ff;
 }
 
 .navbar-menu a:hover,

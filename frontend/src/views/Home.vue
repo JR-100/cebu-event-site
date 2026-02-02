@@ -2,6 +2,15 @@
   <div class="home">
     <!-- Hero Section -->
     <section class="hero">
+      <div class="hero-slideshow">
+        <div
+          v-for="(image, index) in heroImages"
+          :key="index"
+          class="hero-slide"
+          :class="{ active: currentSlide === index }"
+          :style="{ backgroundImage: `url(${image})` }"
+        ></div>
+      </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <h1>Discover Cebu's Best Events</h1>
@@ -80,21 +89,60 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import api from '../api/axios';
 import EventCard from '../components/EventCard.vue';
+
+// Import hero images
+import heroImage1 from '../assets/hero-image.jpg';
+import heroImage2 from '../assets/simala.jpg';
+import heroImage3 from '../assets/background 2.webp';
+import heroImage4 from '../assets/tops.webp';
+import heroImage5 from '../assets/magellans-cross.webp';
+
+const heroImages = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
+const currentSlide = ref(0);
+let slideInterval = null;
+
+const startSlideshow = () => {
+  slideInterval = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % heroImages.length;
+  }, 5000); // Change slide every 5 seconds
+};
+
+const resetSlideshow = () => {
+  if (slideInterval) clearInterval(slideInterval);
+  startSlideshow();
+};
+
+const nextSlide = () => {
+  currentSlide.value = (currentSlide.value + 1) % heroImages.length;
+  resetSlideshow();
+};
+
+const prevSlide = () => {
+  currentSlide.value = (currentSlide.value - 1 + heroImages.length) % heroImages.length;
+  resetSlideshow();
+};
+
+const goToSlide = (index) => {
+  currentSlide.value = index;
+  resetSlideshow();
+};
 
 const featuredEvents = ref([]);
 const loading = ref(true);
 
 const categories = [
-  { name: 'Festival', icon: '🎉', gradient: 'linear-gradient(135deg, #0d9488, #14b8a6)' },
-  { name: 'Music', icon: '🎵', gradient: 'linear-gradient(135deg, #0891b2, #06b6d4)' },
+  { name: 'Festival', icon: '🎉', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' },
+  { name: 'Music', icon: '🎵', gradient: 'linear-gradient(135deg, #8b5cf6, #6d28d9)' },
   { name: 'Sports', icon: '⚽', gradient: 'linear-gradient(135deg, #22c55e, #16a34a)' },
   { name: 'Community', icon: '🤝', gradient: 'linear-gradient(135deg, #ec4899, #db2777)' },
 ];
 
 onMounted(async () => {
+  startSlideshow();
+
   try {
     const response = await api.get('/events/featured');
     featuredEvents.value = response.data;
@@ -102,6 +150,12 @@ onMounted(async () => {
     console.error('Error fetching featured events:', error);
   } finally {
     loading.value = false;
+  }
+});
+
+onUnmounted(() => {
+  if (slideInterval) {
+    clearInterval(slideInterval);
   }
 });
 </script>
@@ -113,27 +167,48 @@ onMounted(async () => {
 
 /* Hero Section */
 .hero {
-  height: 70vh;
+  height: 100vh;
+  width: 100%;
   min-height: 500px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/src/assets/hero-image.jpg');
+  margin-top: 0;
+  padding-top: 60px;
+  overflow: hidden;
+}
+
+.hero-slideshow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-top: 60px;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-slide.active {
+  opacity: 1;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(30, 58, 74, 0.2), rgba(30, 58, 74, 0.5));
+  background: linear-gradient(to bottom, rgba(30, 58, 74, 0.3), rgba(30, 58, 74, 0.5));
+  z-index: 1;
 }
 
 .hero-content {
   position: relative;
+  z-index: 2;
   color: white;
   max-width: 900px;
   padding: 4rem;
@@ -144,17 +219,20 @@ onMounted(async () => {
 }
 
 .hero-content h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   line-height: 1.2;
+  color: #0ea5e9;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 .hero-content p {
-  font-size: 1.25rem;
-  opacity: 0.9;
+  font-size: 1.3rem;
   margin-bottom: 2rem;
   max-width: 600px;
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .btn-hero {
@@ -189,7 +267,6 @@ onMounted(async () => {
 .discover-intro h2 {
   font-size: 2rem;
   font-weight: 700;
-  font-style: italic;
   margin-bottom: 1rem;
 }
 
@@ -361,7 +438,6 @@ onMounted(async () => {
 .cta-section h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  font-style: italic;
   margin-bottom: 1rem;
 }
 
