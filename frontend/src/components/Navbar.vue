@@ -24,7 +24,7 @@
             <li><router-link to="/events?category=Community">Community</router-link></li>
           </ul>
         </li>
-        <li><router-link to="/events" @click="isMenuOpen = false">List event</router-link></li>
+        <li><router-link to="/events" @click="isMenuOpen = false">Events</router-link></li>
         <li><router-link to="/calendar" @click="isMenuOpen = false">Calendar</router-link></li>
       </ul>
     </div>
@@ -82,9 +82,7 @@ onUnmounted(() => {
   text-decoration: none;
   font-size: 1.25rem;
   font-weight: 600;
-  font-style: italic;
   color: white;
-  transition: color 0.3s ease;
 }
 
 .navbar.scrolled .navbar-brand {

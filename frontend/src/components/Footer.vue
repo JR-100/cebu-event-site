@@ -22,8 +22,8 @@
         <ul>
           <li><router-link to="/events?category=Festival">Festivals</router-link></li>
           <li><router-link to="/events?category=Music">Music</router-link></li>
-          <li><router-link to="/events?category=Food">Food</router-link></li>
-          <li><router-link to="/events?category=Workshop">Workshops</router-link></li>
+          <li><router-link to="/events?category=Sports">Sports</router-link></li>
+          <li><router-link to="/events?category=Community">Community</router-link></li>
         </ul>
       </div>
 

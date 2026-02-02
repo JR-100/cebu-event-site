@@ -4,7 +4,9 @@
     <section class="hero">
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <h1>Cebu Event Site</h1>
+        <h1>Discover Cebu's Best Events</h1>
+        <p>From vibrant festivals to intimate gatherings, find what's happening in the Queen City of the South</p>
+        <router-link to="/events" class="btn btn-hero">Browse All Events</router-link>
       </div>
     </section>
 
@@ -115,8 +117,8 @@ onMounted(async () => {
   min-height: 500px;
   position: relative;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   background-image: url('/src/assets/hero-image.jpg');
   background-size: cover;
   background-position: center;
@@ -135,21 +137,41 @@ onMounted(async () => {
   color: white;
   max-width: 900px;
   padding: 4rem;
-  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .hero-content h1 {
-  font-size: 2.75rem;
+  font-size: 3rem;
   font-weight: 700;
-  font-style: italic;
-  margin-bottom: 0;
+  margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .hero-content p {
-  font-size: 1.1rem;
-  opacity: 0;
-  margin-bottom: 0;
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.btn-hero {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: #0ea5e9;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-hero:hover {
+  background: #0284c7;
+  transform: translateY(-2px);
 }
 
 /* Discover Section - Below Hero */
