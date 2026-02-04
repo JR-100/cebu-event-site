@@ -120,7 +120,7 @@ const searchQuery = ref('');
 const selectedCategory = ref('all');
 const currentPage = ref(1);
 const totalPages = ref(1);
-const categories = ref([]);
+const categories = ['Festival', 'Music', 'Sports', 'Community'];
 
 const defaultImage = 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800';
 
@@ -196,18 +196,8 @@ const fetchEvents = async () => {
   }
 };
 
-const fetchCategories = async () => {
-  try {
-    const response = await api.get('/events/categories');
-    categories.value = response.data;
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-  }
-};
-
 onMounted(() => {
   fetchEvents();
-  fetchCategories();
 });
 </script>
 
@@ -277,6 +267,14 @@ onMounted(() => {
   background: white;
   cursor: pointer;
   min-width: 180px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.category-select option {
+  color: #1e293b;
+  background: white;
+  padding: 0.5rem;
 }
 
 .category-select:focus {

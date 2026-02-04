@@ -425,6 +425,8 @@ onUnmounted(() => {
 .category-card h3 {
   font-size: 1rem;
   font-weight: 600;
+  color: white;
+  margin: 0;
 }
 
 /* CTA Section */

@@ -40,6 +40,21 @@
       </header>
 
       <div class="dashboard-content">
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <h2>Quick Actions</h2>
+          <div class="actions-grid">
+            <router-link to="/admin/events/create" class="action-card">
+              <span class="action-icon">➕</span>
+              <span class="action-text">Add New Event</span>
+            </router-link>
+            <router-link to="/admin/events" class="action-card">
+              <span class="action-icon">📋</span>
+              <span class="action-text">Manage Events</span>
+            </router-link>
+          </div>
+        </div>
+
         <!-- Stats Cards -->
         <div class="stats-grid">
           <div class="stat-card">
@@ -110,21 +125,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-          <h2>Quick Actions</h2>
-          <div class="actions-grid">
-            <router-link to="/admin/events/create" class="action-card">
-              <span class="action-icon">➕</span>
-              <span class="action-text">Add New Event</span>
-            </router-link>
-            <router-link to="/admin/events" class="action-card">
-              <span class="action-icon">📋</span>
-              <span class="action-text">Manage Events</span>
-            </router-link>
           </div>
         </div>
       </div>
@@ -316,13 +316,15 @@ onMounted(async () => {
 
 .dashboard-content {
   padding: 2rem;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* Stats Grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  gap: 20px;
   margin-bottom: 2rem;
 }
 
@@ -332,7 +334,8 @@ onMounted(async () => {
   padding: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
@@ -469,12 +472,13 @@ onMounted(async () => {
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1rem;
+  gap: 20px;
 }
 
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 20px;
 }
 
 .action-card {

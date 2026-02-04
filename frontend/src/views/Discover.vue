@@ -110,7 +110,7 @@ const selectedCategory = ref('all');
 const currentPage = ref(1);
 const totalPages = ref(1);
 
-const allCategories = ['all', 'Festival', 'Music', 'Sports' , 'Community'];
+const allCategories = ['All', 'Festival', 'Music', 'Sports' , 'Community'];
 
 const sectionTitle = computed(() => {
   if (searchQuery.value) {
