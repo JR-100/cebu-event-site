@@ -6,6 +6,13 @@
       <button @click="nextMonth" class="nav-btn">&gt;</button>
     </div>
 
+    <div class="calendar-legend">
+      <span class="legend-item"><span class="legend-dot festival"></span>Festival</span>
+      <span class="legend-item"><span class="legend-dot music"></span>Music</span>
+      <span class="legend-item"><span class="legend-dot sports"></span>Sports</span>
+      <span class="legend-item"><span class="legend-dot community"></span>Community</span>
+    </div>
+
     <div class="calendar-weekdays">
       <span v-for="day in weekdays" :key="day">{{ day }}</span>
     </div>
@@ -29,6 +36,7 @@
             v-for="(event, i) in day.events.slice(0, 3)"
             :key="i"
             class="event-dot"
+            :class="getCategoryClass(event.category)"
             :title="event.name"
           ></span>
         </div>
@@ -120,6 +128,16 @@ function selectDate(day) {
   }
 }
 
+function getCategoryClass(category) {
+  const categoryMap = {
+    'Festival': 'festival',
+    'Music': 'music',
+    'Sports': 'sports',
+    'Community': 'community'
+  };
+  return categoryMap[category] || 'default';
+}
+
 function previousMonth() {
   currentDate.value = new Date(
     currentDate.value.getFullYear(),
@@ -169,6 +187,36 @@ emitMonthChanged();
   font-weight: 600;
   color: #1e293b;
 }
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.festival { background: #f59e0b; }
+.legend-dot.music { background: #8b5cf6; }
+.legend-dot.sports { background: #22c55e; }
+.legend-dot.community { background: #ec4899; }
 
 .nav-btn {
   width: 36px;
@@ -261,8 +309,14 @@ emitMonthChanged();
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: #64748b;
 }
+
+.event-dot.festival { background: #f59e0b; }
+.event-dot.music { background: #8b5cf6; }
+.event-dot.sports { background: #22c55e; }
+.event-dot.community { background: #ec4899; }
+.event-dot.default { background: #64748b; }
 
 .calendar-day.today .event-dot,
 .calendar-day.selected .event-dot {

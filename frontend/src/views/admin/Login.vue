@@ -3,7 +3,6 @@
     <div class="login-container">
       <div class="login-card">
         <div class="login-header">
-          <span class="brand-icon">🌴</span>
           <h1>Cebu Events</h1>
           <p>Admin Panel</p>
         </div>

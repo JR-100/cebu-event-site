@@ -2,8 +2,12 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
-        <span class="brand-icon">🌴</span>
-        <span class="brand-text">Cebu Events</span>
+        <div class="brand-header">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span class="brand-text">Cebu Events</span>
+        </div>
         <p class="footer-tagline">Discover the best events in the Queen City of the South</p>
       </div>
 
@@ -69,8 +73,16 @@ const currentYear = computed(() => new Date().getFullYear());
   gap: 0.5rem;
 }
 
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .brand-icon {
-  font-size: 2rem;
+  width: 32px;
+  height: 32px;
+  color: #0ea5e9;
 }
 
 .brand-text {

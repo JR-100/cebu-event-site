@@ -3,28 +3,48 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <span class="brand-icon">🌴</span>
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
         <span class="brand-text">Cebu Events</span>
       </div>
 
       <nav class="sidebar-nav">
         <router-link to="/admin" class="nav-item" exact-active-class="active">
-          <span class="nav-icon">📊</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
           Dashboard
         </router-link>
         <router-link to="/admin/events" class="nav-item" active-class="active">
-          <span class="nav-icon">📅</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
           Events
         </router-link>
       </nav>
 
       <div class="sidebar-footer">
         <router-link to="/" class="nav-item">
-          <span class="nav-icon">🌐</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
           View Website
         </router-link>
         <button @click="logout" class="nav-item logout-btn">
-          <span class="nav-icon">🚪</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
           Logout
         </button>
       </div>
@@ -35,6 +55,10 @@
       <header class="top-header">
         <h1>Dashboard</h1>
         <div class="user-info">
+          <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
           <span>Welcome, {{ user?.name || 'Admin' }}</span>
         </div>
       </header>
@@ -44,12 +68,26 @@
         <div class="quick-actions">
           <h2>Quick Actions</h2>
           <div class="actions-grid">
-            <router-link to="/admin/events/create" class="action-card">
-              <span class="action-icon">➕</span>
+            <router-link to="/admin/events/create" class="action-card add-event">
+              <div class="action-icon-wrapper">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </div>
               <span class="action-text">Add New Event</span>
             </router-link>
-            <router-link to="/admin/events" class="action-card">
-              <span class="action-icon">📋</span>
+            <router-link to="/admin/events" class="action-card manage-events">
+              <div class="action-icon-wrapper">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+              </div>
               <span class="action-text">Manage Events</span>
             </router-link>
           </div>
@@ -58,7 +96,14 @@
         <!-- Stats Cards -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon blue">📅</div>
+            <div class="stat-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
             <div class="stat-info">
               <span class="stat-value">{{ stats.total }}</span>
               <span class="stat-label">Total Events</span>
@@ -66,7 +111,12 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon green">🎉</div>
+            <div class="stat-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+            </div>
             <div class="stat-info">
               <span class="stat-value">{{ stats.upcoming }}</span>
               <span class="stat-label">Upcoming Events</span>
@@ -74,7 +124,11 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon yellow">⭐</div>
+            <div class="stat-icon yellow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </div>
             <div class="stat-info">
               <span class="stat-value">{{ stats.featured }}</span>
               <span class="stat-label">Featured Events</span>
@@ -82,7 +136,11 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon purple">📁</div>
+            <div class="stat-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
             <div class="stat-info">
               <span class="stat-value">{{ stats.categories }}</span>
               <span class="stat-label">Categories</span>
@@ -94,7 +152,13 @@
         <div class="recent-section">
           <div class="section-header">
             <h2>Recent Events</h2>
-            <router-link to="/admin/events" class="view-all">View All →</router-link>
+            <router-link to="/admin/events" class="view-all">
+              View All
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </router-link>
           </div>
 
           <div class="events-table-wrapper">
@@ -111,11 +175,17 @@
                 <tr v-for="event in recentEvents" :key="event.id">
                   <td>
                     <div class="event-name-cell">
-                      <span v-if="event.is_featured" class="featured-star">⭐</span>
+                      <svg v-if="event.is_featured" class="featured-star" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      </svg>
                       {{ event.name }}
                     </div>
                   </td>
-                  <td><span class="category-tag">{{ event.category }}</span></td>
+                  <td>
+                    <span class="category-tag" :class="getCategoryClass(event.category)">
+                      {{ event.category }}
+                    </span>
+                  </td>
                   <td>{{ formatDate(event.date_time) }}</td>
                   <td>
                     <span class="status-badge" :class="getEventStatus(event.date_time)">
@@ -161,6 +231,16 @@ const getEventStatus = (dateString) => {
   const eventDate = new Date(dateString);
   const now = new Date();
   return eventDate >= now ? 'upcoming' : 'past';
+};
+
+const getCategoryClass = (category) => {
+  const categoryMap = {
+    'Festival': 'festival',
+    'Music': 'music',
+    'Sports': 'sports',
+    'Community': 'community'
+  };
+  return categoryMap[category] || 'default';
 };
 
 const logout = async () => {
@@ -230,7 +310,9 @@ onMounted(async () => {
 }
 
 .brand-icon {
-  font-size: 1.75rem;
+  width: 28px;
+  height: 28px;
+  color: #0ea5e9;
 }
 
 .brand-text {
@@ -270,7 +352,9 @@ onMounted(async () => {
 }
 
 .nav-icon {
-  font-size: 1.1rem;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {
@@ -311,21 +395,105 @@ onMounted(async () => {
 }
 
 .user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: #64748b;
+}
+
+.user-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .dashboard-content {
   padding: 2rem;
+  display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+}
+
+/* Quick Actions */
+.quick-actions h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.action-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.action-card.add-event:hover {
+  border-color: #0ea5e9;
+}
+
+.action-card.manage-events:hover {
+  border-color: #8b5cf6;
+}
+
+.action-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-event .action-icon-wrapper {
+  background: #dbeafe;
+}
+
+.manage-events .action-icon-wrapper {
+  background: #ede9fe;
+}
+
+.action-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.add-event .action-icon {
+  color: #0ea5e9;
+}
+
+.manage-events .action-icon {
+  color: #8b5cf6;
+}
+
+.action-text {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
 }
 
 /* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  margin-bottom: 2rem;
 }
 
 .stat-card {
@@ -334,9 +502,14 @@ onMounted(async () => {
   padding: 1.5rem;
   display: flex;
   align-items: center;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 1rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 .stat-icon {
@@ -346,13 +519,17 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
 }
 
-.stat-icon.blue { background: #dbeafe; }
-.stat-icon.green { background: #dcfce7; }
-.stat-icon.yellow { background: #fef3c7; }
-.stat-icon.purple { background: #e9d5ff; }
+.stat-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.stat-icon.blue { background: #dbeafe; color: #0ea5e9; }
+.stat-icon.green { background: #dcfce7; color: #22c55e; }
+.stat-icon.yellow { background: #fef3c7; color: #f59e0b; }
+.stat-icon.purple { background: #ede9fe; color: #8b5cf6; }
 
 .stat-info {
   display: flex;
@@ -375,7 +552,6 @@ onMounted(async () => {
   background: white;
   border-radius: 16px;
   padding: 1.5rem;
-  margin-bottom: 2rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
@@ -383,7 +559,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .section-header h2 {
@@ -394,10 +570,23 @@ onMounted(async () => {
 }
 
 .view-all {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   color: #0ea5e9;
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
+  transition: gap 0.3s ease;
+}
+
+.view-all:hover {
+  gap: 0.5rem;
+}
+
+.view-all svg {
+  width: 16px;
+  height: 16px;
 }
 
 .events-table-wrapper {
@@ -429,30 +618,40 @@ onMounted(async () => {
   color: #374151;
 }
 
+.events-table tbody tr:hover {
+  background: #f8fafc;
+}
+
 .event-name-cell {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 500;
 }
 
 .featured-star {
-  font-size: 0.875rem;
+  width: 16px;
+  height: 16px;
 }
 
 .category-tag {
-  background: #e0f2fe;
-  color: #0284c7;
-  padding: 4px 10px;
-  border-radius: 15px;
+  padding: 4px 12px;
+  border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
+.category-tag.festival { background: #fef3c7; color: #b45309; }
+.category-tag.music { background: #ede9fe; color: #7c3aed; }
+.category-tag.sports { background: #dcfce7; color: #16a34a; }
+.category-tag.community { background: #fce7f3; color: #db2777; }
+.category-tag.default { background: #e0f2fe; color: #0284c7; }
+
 .status-badge {
-  padding: 4px 10px;
-  border-radius: 15px;
+  padding: 4px 12px;
+  border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: capitalize;
 }
 
@@ -466,47 +665,6 @@ onMounted(async () => {
   color: #64748b;
 }
 
-/* Quick Actions */
-.quick-actions h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 1rem;
-  gap: 20px;
-}
-
-.actions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.action-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: white;
-  border-radius: 12px;
-  text-decoration: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.action-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.action-icon {
-  font-size: 1.5rem;
-}
-
-.action-text {
-  font-weight: 500;
-  color: #374151;
-}
-
 @media (max-width: 768px) {
   .sidebar {
     display: none;
@@ -514,6 +672,10 @@ onMounted(async () => {
 
   .main-content {
     margin-left: 0;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>

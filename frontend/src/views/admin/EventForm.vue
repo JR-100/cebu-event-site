@@ -3,28 +3,48 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <span class="brand-icon">🌴</span>
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
         <span class="brand-text">Cebu Events</span>
       </div>
 
       <nav class="sidebar-nav">
         <router-link to="/admin" class="nav-item" exact-active-class="active">
-          <span class="nav-icon">📊</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
           Dashboard
         </router-link>
         <router-link to="/admin/events" class="nav-item" active-class="active">
-          <span class="nav-icon">📅</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <line x1="9" y1="2" x2="9" y2="6"/>
+            <line x1="15" y1="2" x2="15" y2="6"/>
+          </svg>
           Events
         </router-link>
       </nav>
 
       <div class="sidebar-footer">
         <router-link to="/" class="nav-item">
-          <span class="nav-icon">🌐</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
           View Website
         </router-link>
         <button @click="logout" class="nav-item logout-btn">
-          <span class="nav-icon">🚪</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
           Logout
         </button>
       </div>
@@ -63,11 +83,7 @@
                 <option value="">Select category</option>
                 <option value="Festival">Festival</option>
                 <option value="Music">Music</option>
-                <option value="Food">Food</option>
-                <option value="Workshop">Workshop</option>
                 <option value="Sports">Sports</option>
-                <option value="Art">Art</option>
-                <option value="Business">Business</option>
                 <option value="Community">Community</option>
               </select>
               <span v-if="errors.category" class="field-error">{{ errors.category }}</span>
@@ -119,7 +135,11 @@
                   <button type="button" @click="removeImage" class="remove-image">×</button>
                 </div>
                 <div v-else class="upload-placeholder" @click="triggerFileInput">
-                  <span class="upload-icon">📷</span>
+                  <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <path d="M21 15l-5-5L5 21"/>
+                  </svg>
                   <span>Click to upload image</span>
                   <span class="upload-hint">JPEG, PNG, GIF, WEBP (max 2MB)</span>
                 </div>
@@ -355,7 +375,9 @@ onMounted(async () => {
 }
 
 .brand-icon {
-  font-size: 1.75rem;
+  width: 28px;
+  height: 28px;
+  color: #0ea5e9;
 }
 
 .brand-text {
@@ -395,7 +417,9 @@ onMounted(async () => {
 }
 
 .nav-icon {
-  font-size: 1.1rem;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {
@@ -496,6 +520,7 @@ onMounted(async () => {
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   font-size: 1rem;
+  background: white;
   transition: all 0.3s ease;
 }
 
@@ -548,7 +573,9 @@ onMounted(async () => {
 }
 
 .upload-icon {
-  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  color: #94a3b8;
 }
 
 .upload-hint {
