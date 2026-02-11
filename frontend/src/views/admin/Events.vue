@@ -31,6 +31,13 @@
       </nav>
 
       <div class="sidebar-footer">
+        <router-link to="/admin/profile" class="nav-item" active-class="active">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Profile
+        </router-link>
         <router-link to="/" class="nav-item">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"/>
@@ -500,7 +507,12 @@ onMounted(() => {
   border-radius: 10px;
   font-size: 1rem;
   background: white;
+  color: #1e293b;
   transition: all 0.3s ease;
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
 }
 
 .search-box input:focus {

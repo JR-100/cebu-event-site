@@ -251,7 +251,12 @@ onMounted(() => {
   border-radius: 10px;
   font-size: 1rem;
   background: white;
+  color: #1e293b;
   transition: all 0.3s ease;
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
 }
 
 .search-box input:focus {

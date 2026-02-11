@@ -22,24 +22,19 @@
         v-for="(day, index) in calendarDays"
         :key="index"
         class="calendar-day"
-        :class="{
-          'other-month': !day.isCurrentMonth,
-          'today': day.isToday,
-          'has-events': day.events.length > 0,
-          'selected': isSelected(day.date)
-        }"
+        :class="[
+          {
+            'other-month': !day.isCurrentMonth,
+            'today': day.isToday && day.events.length === 0,
+            'has-events': day.events.length > 0,
+            'selected': isSelected(day.date)
+          },
+          day.events.length > 0 ? 'cat-' + getDominantCategory(day.events) : ''
+        ]"
         @click="selectDate(day)"
       >
         <span class="day-number">{{ day.dayNumber }}</span>
-        <div v-if="day.events.length > 0" class="event-dots">
-          <span
-            v-for="(event, i) in day.events.slice(0, 3)"
-            :key="i"
-            class="event-dot"
-            :class="getCategoryClass(event.category)"
-            :title="event.name"
-          ></span>
-        </div>
+        <div v-if="day.events.length > 1" class="event-count">+{{ day.events.length }}</div>
       </div>
     </div>
   </div>
@@ -136,6 +131,12 @@ function getCategoryClass(category) {
     'Community': 'community'
   };
   return categoryMap[category] || 'default';
+}
+
+function getDominantCategory(events) {
+  if (!events || events.length === 0) return 'default';
+  // Use the first event's category as the dominant color
+  return getCategoryClass(events[0].category);
 }
 
 function previousMonth() {
@@ -270,7 +271,18 @@ emitMonthChanged();
 }
 
 .calendar-day:hover {
-  background: #f1f5f9;
+  background: #0ea5e9;
+  color: white;
+}
+
+.calendar-day:hover .day-number {
+  color: white;
+}
+
+.calendar-day:active {
+  background: #0284c7;
+  color: white;
+  transform: scale(0.95);
 }
 
 .calendar-day.other-month {
@@ -288,21 +300,81 @@ emitMonthChanged();
 
 .calendar-day.has-events {
   font-weight: 600;
+  color: white;
+}
+
+.calendar-day.cat-festival {
+  background: #f59e0b;
+  color: white;
+}
+
+.calendar-day.cat-festival:hover {
+  background: #d97706;
+}
+
+.calendar-day.cat-music {
+  background: #8b5cf6;
+  color: white;
+}
+
+.calendar-day.cat-music:hover {
+  background: #7c3aed;
+}
+
+.calendar-day.cat-sports {
+  background: #22c55e;
+  color: white;
+}
+
+.calendar-day.cat-sports:hover {
+  background: #16a34a;
+}
+
+.calendar-day.cat-community {
+  background: #ec4899;
+  color: white;
+}
+
+.calendar-day.cat-community:hover {
+  background: #db2777;
+}
+
+.calendar-day.cat-default {
+  background: #0ea5e9;
+  color: white;
+}
+
+.calendar-day.cat-default:hover {
+  background: #0284c7;
+}
+
+.calendar-day.has-events .day-number {
+  color: white;
 }
 
 .calendar-day.selected {
   background: #1e293b;
   color: white;
+  box-shadow: 0 0 0 2px #0ea5e9;
+}
+
+.calendar-day.selected:hover {
+  background: #334155;
+}
+
+.calendar-day:hover .event-dot {
+  background: white;
 }
 
 .day-number {
   font-size: 0.875rem;
 }
 
-.event-dots {
-  display: flex;
-  gap: 2px;
-  margin-top: 2px;
+.event-count {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 1px;
 }
 
 .event-dot {

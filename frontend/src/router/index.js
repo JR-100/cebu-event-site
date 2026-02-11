@@ -12,6 +12,7 @@ import AdminLogin from '../views/admin/Login.vue';
 import AdminDashboard from '../views/admin/Dashboard.vue';
 import AdminEvents from '../views/admin/Events.vue';
 import AdminEventForm from '../views/admin/EventForm.vue';
+import AdminProfile from '../views/admin/Profile.vue';
 
 const routes = [
   // Public routes
@@ -45,6 +46,12 @@ const routes = [
     path: '/admin/events/:id/edit',
     name: 'AdminEventEdit',
     component: AdminEventForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/profile',
+    name: 'AdminProfile',
+    component: AdminProfile,
     meta: { requiresAuth: true }
   },
 ];
