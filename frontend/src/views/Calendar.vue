@@ -457,12 +457,72 @@ const closeModal = () => {
 }
 
 @media (max-width: 900px) {
+  .calendar-page {
+    padding-top: 60px;
+  }
+
   .calendar-layout {
     grid-template-columns: 1fr;
   }
 
   .events-panel {
     max-height: none;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 2.5rem 0;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header p {
+    font-size: 0.95rem;
+  }
+
+  .calendar-wrapper {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .events-panel {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .modal-content {
+    margin: 1rem;
+    max-height: 85vh;
+  }
+
+  .modal-overlay {
+    padding: 1rem;
+  }
+
+  .modal-body h2 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .event-item-small {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .event-time {
+    align-self: flex-start;
   }
 }
 </style>

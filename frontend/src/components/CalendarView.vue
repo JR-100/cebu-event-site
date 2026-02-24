@@ -394,4 +394,92 @@ emitMonthChanged();
 .calendar-day.selected .event-dot {
   background: white;
 }
+
+@media (max-width: 768px) {
+  .calendar-component {
+    padding: 1rem;
+  }
+
+  .calendar-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .calendar-legend {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .legend-item {
+    font-size: 0.65rem;
+  }
+
+  .calendar-weekdays span {
+    font-size: 0.65rem;
+    padding: 0.25rem;
+  }
+
+  .calendar-days {
+    gap: 2px;
+  }
+
+  .day-number {
+    font-size: 0.75rem;
+  }
+
+  .event-count {
+    font-size: 0.5rem;
+  }
+
+  .nav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-component {
+    padding: 0.75rem;
+  }
+
+  .calendar-header h3 {
+    font-size: 1rem;
+  }
+
+  .calendar-legend {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .legend-item {
+    font-size: 0.6rem;
+  }
+
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .calendar-weekdays span {
+    font-size: 0.6rem;
+  }
+
+  .calendar-days {
+    gap: 1px;
+  }
+
+  .calendar-day {
+    border-radius: 6px;
+    padding: 2px;
+  }
+
+  .day-number {
+    font-size: 0.65rem;
+  }
+
+  .nav-btn {
+    width: 28px;
+    height: 28px;
+  }
+}
 </style>

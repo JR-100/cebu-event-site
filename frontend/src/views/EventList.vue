@@ -507,6 +507,35 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .event-list-page {
+    padding-top: 60px;
+  }
+
+  .page-header {
+    padding: 2.5rem 0;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .list-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .search-box {
+    min-width: 100%;
+  }
+
+  .category-select {
+    min-width: 100%;
+  }
+
   .event-list-item {
     flex-direction: column;
   }
@@ -523,6 +552,61 @@ onMounted(() => {
   .view-btn {
     width: 100%;
     text-align: center;
+  }
+
+  .event-title {
+    font-size: 1.1rem;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .page-numbers {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .page-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .page-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .page-header p {
+    font-size: 0.95rem;
+  }
+
+  .event-details {
+    padding: 1rem;
+  }
+
+  .event-meta {
+    gap: 0.5rem;
+  }
+
+  .event-title {
+    font-size: 1rem;
+  }
+
+  .event-description {
+    font-size: 0.8rem;
+  }
+
+  .event-action {
+    padding: 0 1rem 1rem;
   }
 }
 </style>

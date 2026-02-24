@@ -1,7 +1,9 @@
 <template>
   <div class="admin-layout">
+    <!-- Mobile Sidebar Overlay -->
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-header">
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -60,6 +62,9 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="top-header">
+        <button class="mobile-menu-btn" @click="sidebarOpen = !sidebarOpen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
         <h1>Events Management</h1>
         <router-link to="/admin/events/create" class="add-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -141,17 +146,14 @@
                 <td>
                   <div class="actions">
                     <router-link :to="`/admin/events/${event.id}/edit`" class="action-btn edit" title="Edit">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                       </svg>
                     </router-link>
                     <button @click="confirmDelete(event)" class="action-btn delete" title="Delete">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"/>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                        <line x1="10" y1="11" x2="10" y2="17"/>
-                        <line x1="14" y1="11" x2="14" y2="17"/>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="delete-icon">
+                        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339C55.5 487.8 73.8 512 100 512h248c26.2 0 44.5-24.2 46.8-45l21.2-339zM160 192v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm96 0v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm96 0v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
                       </svg>
                     </button>
                   </div>
@@ -202,10 +204,10 @@
     <div v-if="deleteModal" class="modal-overlay" @click.self="deleteModal = null">
       <div class="modal-content delete-modal">
         <div class="modal-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
         </div>
         <h3>Delete Event</h3>
@@ -213,9 +215,8 @@
         <div class="modal-actions">
           <button @click="deleteModal = null" class="cancel-btn">Cancel</button>
           <button @click="deleteEvent" class="delete-confirm-btn" :disabled="deleting">
-            <svg v-if="!deleting" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            <svg v-if="!deleting" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 448 512" style="fill: white;">
+              <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339C55.5 487.8 73.8 512 100 512h248c26.2 0 44.5-24.2 46.8-45l21.2-339zM160 192v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm96 0v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm96 0v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
             </svg>
             {{ deleting ? 'Deleting...' : 'Delete' }}
           </button>
@@ -231,6 +232,7 @@ import { useRouter } from 'vue-router';
 import api from '../../api/axios';
 
 const router = useRouter();
+const sidebarOpen = ref(false);
 
 const events = ref([]);
 const loading = ref(true);
@@ -659,8 +661,8 @@ onMounted(() => {
 }
 
 .action-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .action-btn.edit {
@@ -668,19 +670,39 @@ onMounted(() => {
   color: #0ea5e9;
 }
 
+.action-btn.edit svg {
+  stroke: #0ea5e9;
+}
+
 .action-btn.edit:hover {
   background: #0ea5e9;
   color: white;
 }
 
+.action-btn.edit:hover svg {
+  stroke: white;
+}
+
 .action-btn.delete {
   background: #fee2e2;
   color: #ef4444;
+  width: 48px;
+
+}
+
+.action-btn.delete .delete-icon {
+  fill: #ef4444;
+  width: 22px;
+  height: 22px;
 }
 
 .action-btn.delete:hover {
   background: #ef4444;
   color: white;
+}
+
+.action-btn.delete:hover .delete-icon {
+  fill: white;
 }
 
 .no-data {
@@ -843,13 +865,73 @@ onMounted(() => {
   cursor: not-allowed;
 }
 
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  background: #e2e8f0;
+}
+
+.mobile-menu-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #1e293b;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .sidebar {
-    display: none;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
   }
 
   .main-content {
     margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .top-header {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .top-header h1 {
+    font-size: 1.25rem;
+    flex: 1;
+  }
+
+  .page-content {
+    padding: 1rem;
+  }
+
+  .controls {
+    flex-direction: column;
   }
 
   .events-table {
@@ -857,6 +939,35 @@ onMounted(() => {
   }
 
   .event-thumb {
+    display: none;
+  }
+
+  .add-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .add-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .events-table th,
+  .events-table td {
+    padding: 0.5rem;
+  }
+
+  .action-btn {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .action-btn span {
     display: none;
   }
 }

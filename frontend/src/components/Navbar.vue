@@ -1,52 +1,70 @@
 <template>
   <nav class="navbar" :class="{ 'scrolled': isScrolled, 'solid-bg': !isHomePage }">
     <div class="navbar-container">
-      <router-link to="/" class="navbar-brand">
+      <router-link to="/" class="navbar-brand" @click="closeMenu">
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
         <span class="brand-text">Cebu Event Site</span>
       </router-link>
 
-      <button class="mobile-toggle" @click="isMenuOpen = !isMenuOpen">
+      <button class="mobile-toggle" :class="{ 'open': isMenuOpen }" @click="isMenuOpen = !isMenuOpen" aria-label="Toggle menu">
         <span></span>
         <span></span>
         <span></span>
       </button>
 
       <ul class="navbar-menu" :class="{ 'active': isMenuOpen }">
-        <li><router-link to="/" @click="isMenuOpen = false">Home</router-link></li>
-        <li class="dropdown">
-          <router-link to="/discover" @click="isMenuOpen = false" class="dropdown-trigger">
+        <li><router-link to="/" @click="closeMenu">Home</router-link></li>
+        <li class="dropdown" :class="{ 'dropdown-open': isDropdownOpen }">
+          <a href="#" class="dropdown-trigger" @click.prevent="toggleDropdown">
             Discover <span class="arrow">▾</span>
-          </router-link>
+          </a>
           <ul class="dropdown-menu">
-            <li><router-link to="/events?category=Festival">Festivals</router-link></li>
-            <li><router-link to="/events?category=Music">Music</router-link></li>
-            <li><router-link to="/events?category=Sports">Sports</router-link></li>
-            <li><router-link to="/events?category=Community">Community</router-link></li>
+            <li><router-link to="/events?category=Festival" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #f59e0b;"></span> Festivals</router-link></li>
+            <li><router-link to="/events?category=Music" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #8b5cf6;"></span> Music</router-link></li>
+            <li><router-link to="/events?category=Sports" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #22c55e;"></span> Sports</router-link></li>
+            <li><router-link to="/events?category=Community" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #ec4899;"></span> Community</router-link></li>
           </ul>
         </li>
-        <li><router-link to="/events" @click="isMenuOpen = false">Events</router-link></li>
-        <li><router-link to="/calendar" @click="isMenuOpen = false">Calendar</router-link></li>
+        <li><router-link to="/events" @click="closeMenu">Events</router-link></li>
+        <li><router-link to="/calendar" @click="closeMenu">Calendar</router-link></li>
       </ul>
     </div>
+
+    <!-- Overlay to close menu on outside click -->
+    <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
   </nav>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
+const isDropdownOpen = ref(false);
 
 const isHomePage = computed(() => route.path === '/');
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+  isDropdownOpen.value = false;
+};
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
 };
+
+// Close menu on route change
+watch(() => route.path, () => {
+  closeMenu();
+});
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
@@ -66,7 +84,7 @@ onUnmounted(() => {
   z-index: 1000;
   padding: 1rem 2rem;
   transition: all 0.3s ease;
-  background: transparent;
+  background: #1e3a4a;
 }
 
 .navbar.scrolled {
@@ -161,47 +179,69 @@ onUnmounted(() => {
 .dropdown-trigger {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.4rem;
+  cursor: pointer;
 }
 
 .arrow {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.dropdown:hover .arrow,
+.dropdown-open .arrow {
+  transform: rotate(180deg);
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: #1a2e3a;
   min-width: 180px;
-  border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  padding: 0.5rem 0;
+  border-radius: 10px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  padding: 0.4rem;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   z-index: 100;
   list-style: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dropdown:hover .dropdown-menu {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
-.dropdown-menu li a {
-  display: block;
-  padding: 0.75rem 1.25rem;
-  color: #374151;
+.dropdown-item {
+  display: flex !important;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.9rem !important;
+  border-radius: 6px;
   text-decoration: none;
   transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
-.dropdown-menu li a:hover {
-  background: #f1f5f9;
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
   color: #0ea5e9;
+}
+
+.cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .mobile-toggle {
@@ -212,6 +252,7 @@ onUnmounted(() => {
   border: none;
   cursor: pointer;
   padding: 5px;
+  z-index: 1002;
 }
 
 .mobile-toggle span {
@@ -219,45 +260,156 @@ onUnmounted(() => {
   height: 3px;
   background: white;
   border-radius: 3px;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Burger to X animation */
+.mobile-toggle.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-toggle.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.mobile-toggle.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 .navbar.scrolled .mobile-toggle span {
   background: white;
 }
 
+.menu-overlay {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
   .mobile-toggle {
     display: flex;
   }
 
-  .navbar-menu {
-    position: absolute;
-    top: 100%;
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+
+  .brand-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
     flex-direction: column;
     background: #1e3a4a;
-    padding: 1rem;
+    padding: 5rem 0 2rem;
     gap: 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    display: none;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease;
+    z-index: 1001;
+    overflow-y: auto;
   }
 
   .navbar-menu.active {
     display: flex;
+    right: 0;
+  }
+
+  .navbar-menu li {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .navbar-menu a {
     color: white;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     display: block;
+    width: 100%;
+    font-size: 1rem;
   }
 
   .navbar-menu a:hover,
   .navbar-menu a.router-link-active {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    color: #0ea5e9;
+  }
+
+  /* Dropdown on mobile: always visible */
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    max-height: none;
+    overflow: visible;
+    transform: none !important;
+    left: 0 !important;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0.25rem 0;
+    min-width: unset;
+    border: none;
+  }
+
+  .dropdown-menu li {
+    border-bottom: none;
+  }
+
+  .dropdown-item {
+    padding: 0.75rem 1.25rem 0.75rem 1.75rem !important;
+    gap: 0.6rem;
+    border-radius: 0 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.95rem;
+  }
+
+  .cat-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #0ea5e9;
+  }
+
+  .dropdown-trigger .arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .brand-text {
+    display: none;
   }
 }
 </style>

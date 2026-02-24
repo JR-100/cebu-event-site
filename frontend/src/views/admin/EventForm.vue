@@ -1,7 +1,9 @@
 <template>
   <div class="admin-layout">
+    <!-- Mobile Sidebar Overlay -->
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-header">
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -60,6 +62,9 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="top-header">
+        <button class="mobile-menu-btn" @click="sidebarOpen = !sidebarOpen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
         <h1>{{ isEditing ? 'Edit Event' : 'Create New Event' }}</h1>
         <router-link to="/admin/events" class="back-link">← Back to Events</router-link>
       </header>
@@ -190,6 +195,7 @@ import api from '../../api/axios';
 
 const route = useRoute();
 const router = useRouter();
+const sidebarOpen = ref(false);
 const fileInput = ref(null);
 
 const isEditing = computed(() => !!route.params.id);
@@ -712,13 +718,69 @@ onMounted(async () => {
   cursor: not-allowed;
 }
 
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  background: #e2e8f0;
+}
+
+.mobile-menu-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #1e293b;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .sidebar {
-    display: none;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
   }
 
   .main-content {
     margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .top-header {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .top-header h1 {
+    font-size: 1.25rem;
+    flex: 1;
+  }
+
+  .page-content {
+    padding: 1rem;
   }
 
   .form-grid {
@@ -727,6 +789,20 @@ onMounted(async () => {
 
   .form-group.full-width {
     grid-column: span 1;
+  }
+
+  .back-link {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .submit-btn {
+    width: 100%;
   }
 }
 </style>

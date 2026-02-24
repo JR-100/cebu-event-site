@@ -460,20 +460,132 @@ onUnmounted(() => {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .hero {
+    height: 80vh;
+    min-height: 400px;
+  }
+
+  .hero-content {
+    padding: 2rem 1.5rem;
+  }
+
   .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 
   .hero-content p {
     font-size: 1rem;
   }
 
+  .discover-intro {
+    padding: 3rem 1.5rem;
+  }
+
+  .discover-intro h2 {
+    font-size: 1.6rem;
+  }
+
   .section-header h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .featured-section,
+  .categories-section,
+  .cta-section {
+    padding: 3rem 0;
   }
 
   .events-grid {
     grid-template-columns: 1fr;
+    padding: 0 0.5rem;
+  }
+
+  .categories-grid {
+    gap: 1rem;
+  }
+
+  .category-card {
+    width: 140px;
+    padding: 1.5rem;
+  }
+
+  .category-icon {
+    font-size: 2.25rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .btn-large {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 70vh;
+    min-height: 350px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .hero-content p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-hero {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .discover-intro h2 {
+    font-size: 1.4rem;
+  }
+
+  .discover-intro p {
+    font-size: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .section-header p {
+    font-size: 0.95rem;
+  }
+
+  .categories-grid {
+    gap: 0.75rem;
+  }
+
+  .category-card {
+    width: 120px;
+    padding: 1.25rem 1rem;
+  }
+
+  .category-icon {
+    font-size: 2rem;
+  }
+
+  .category-card h3 {
+    font-size: 0.85rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta-section p {
+    font-size: 0.95rem;
   }
 }
 </style>

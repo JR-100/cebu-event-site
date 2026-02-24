@@ -482,6 +482,7 @@ onMounted(async () => {
 @media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr;
+    padding: 0 1rem;
   }
 
   .event-sidebar {
@@ -491,26 +492,74 @@ onMounted(async () => {
 
   .sidebar-card {
     flex: 1;
-    min-width: 280px;
+    min-width: 250px;
   }
 }
 
 @media (max-width: 600px) {
   .event-hero {
-    height: 40vh;
-    min-height: 300px;
+    height: 35vh;
+    min-height: 250px;
+  }
+
+  .back-button {
+    top: 70px;
+    left: 1rem;
+    font-size: 0.875rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .event-content {
+    margin-top: -60px;
   }
 
   .event-main {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 16px;
   }
 
   .event-header h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  .event-badges {
+    gap: 0.5rem;
+  }
+
+  .category-badge,
+  .featured-badge {
+    padding: 4px 10px;
+    font-size: 0.75rem;
   }
 
   .info-cards {
     flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .info-card {
+    min-width: auto;
+    padding: 1rem;
+  }
+
+  .event-sidebar {
+    flex-direction: column;
+  }
+
+  .sidebar-card {
+    min-width: auto;
+  }
+
+  .share-buttons {
+    flex-direction: column;
+  }
+
+  .event-description h2 {
+    font-size: 1.1rem;
+  }
+
+  .event-description p {
+    font-size: 0.9rem;
   }
 }
 </style>

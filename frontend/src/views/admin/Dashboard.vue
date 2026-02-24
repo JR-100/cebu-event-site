@@ -1,7 +1,9 @@
 <template>
   <div class="admin-layout">
+    <!-- Mobile Sidebar Overlay -->
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-header">
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -60,9 +62,13 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="top-header">
+        <button class="mobile-menu-btn" @click="sidebarOpen = !sidebarOpen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
         <h1>Dashboard</h1>
         <div class="user-info">
-          <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <img v-if="user?.profile_image" :src="`http://localhost:8000/storage/${user.profile_image}`" alt="Profile" class="header-avatar" />
+          <svg v-else class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
@@ -216,6 +222,7 @@ import api from '../../api/axios';
 
 const router = useRouter();
 
+const sidebarOpen = ref(false);
 const user = ref(null);
 const stats = ref({
   total: 0,
@@ -263,19 +270,24 @@ const logout = async () => {
 };
 
 onMounted(async () => {
-  // Get user from localStorage
+  // Get user from localStorage first for instant display
   const storedUser = localStorage.getItem('admin_user');
   if (storedUser) {
     user.value = JSON.parse(storedUser);
   }
 
-  // Fetch dashboard data
+  // Fetch fresh user data and dashboard data
   try {
-    const [eventsRes, categoriesRes, featuredRes] = await Promise.all([
+    const [meRes, eventsRes, categoriesRes, featuredRes] = await Promise.all([
+      api.get('/admin/me'),
       api.get('/admin/events', { params: { per_page: 5 } }),
       api.get('/events/categories'),
       api.get('/events/featured')
     ]);
+
+    // Update user with fresh data (includes profile_image)
+    user.value = meRes.data;
+    localStorage.setItem('admin_user', JSON.stringify(meRes.data));
 
     recentEvents.value = eventsRes.data.data;
     stats.value = {
@@ -406,6 +418,14 @@ onMounted(async () => {
   align-items: center;
   gap: 0.5rem;
   color: #64748b;
+}
+
+.header-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
 }
 
 .user-icon {
@@ -672,17 +692,103 @@ onMounted(async () => {
   color: #64748b;
 }
 
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  background: #e2e8f0;
+}
+
+.mobile-menu-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #1e293b;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .sidebar {
-    display: none;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
   }
 
   .main-content {
     margin-left: 0;
   }
 
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .top-header {
+    gap: 0.75rem;
+  }
+
+  .top-header h1 {
+    font-size: 1.25rem;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .dashboard-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .user-info span {
+    display: none;
+  }
+
+  .events-table {
+    font-size: 0.75rem;
+  }
+
+  .event-thumb {
+    display: none;
   }
 }
 </style>

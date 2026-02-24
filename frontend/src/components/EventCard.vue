@@ -188,4 +188,40 @@ const truncatedDescription = computed(() => {
 .view-btn:hover {
   color: #0284c7;
 }
+
+@media (max-width: 480px) {
+  .event-image {
+    height: 160px;
+  }
+
+  .event-content {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .event-date {
+    min-width: 50px;
+    padding: 0.5rem;
+  }
+
+  .date-day {
+    font-size: 1.25rem;
+  }
+
+  .date-month {
+    font-size: 0.65rem;
+  }
+
+  .event-title {
+    font-size: 1rem;
+  }
+
+  .event-location {
+    font-size: 0.8rem;
+  }
+
+  .event-description {
+    font-size: 0.8rem;
+  }
+}
 </style>

@@ -404,8 +404,71 @@ watch(() => route.query.category, (newCategory) => {
 }
 
 @media (max-width: 768px) {
+  .discover-page {
+    padding-top: 60px;
+  }
+
+  .page-header {
+    padding: 2.5rem 0;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header p {
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .search-box {
+    margin-bottom: 1rem;
+  }
+
+  .category-filters {
+    gap: 0.5rem;
+  }
+
+  .category-btn {
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+
   .events-grid {
     grid-template-columns: 1fr;
+  }
+
+  .events-grid.featured {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-section h2,
+  .events-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .pagination {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .category-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
   }
 }
 </style>
