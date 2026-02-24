@@ -11,7 +11,7 @@ import Calendar from '../views/Calendar.vue';
 import AdminLogin from '../views/admin/Login.vue';
 import AdminDashboard from '../views/admin/Dashboard.vue';
 import AdminEvents from '../views/admin/Events.vue';
-import AdminEventForm from '../views/admin/EventForm.vue';
+// EventForm is now a modal inside Events.vue
 import AdminProfile from '../views/admin/Profile.vue';
 
 const routes = [
@@ -36,18 +36,7 @@ const routes = [
     component: AdminEvents,
     meta: { requiresAuth: true }
   },
-  {
-    path: '/admin/events/create',
-    name: 'AdminEventCreate',
-    component: AdminEventForm,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/admin/events/:id/edit',
-    name: 'AdminEventEdit',
-    component: AdminEventForm,
-    meta: { requiresAuth: true }
-  },
+
   {
     path: '/admin/profile',
     name: 'AdminProfile',

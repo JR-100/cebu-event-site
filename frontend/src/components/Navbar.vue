@@ -16,8 +16,8 @@
 
       <ul class="navbar-menu" :class="{ 'active': isMenuOpen }">
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
-        <li class="dropdown" :class="{ 'dropdown-open': isDropdownOpen }">
-          <a href="#" class="dropdown-trigger" @click.prevent="toggleDropdown">
+        <li class="dropdown desktop-only">
+          <a href="#" class="dropdown-trigger" @click.prevent>
             Discover <span class="arrow">▾</span>
           </a>
           <ul class="dropdown-menu">
@@ -25,6 +25,19 @@
             <li><router-link to="/events?category=Music" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #8b5cf6;"></span> Music</router-link></li>
             <li><router-link to="/events?category=Sports" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #22c55e;"></span> Sports</router-link></li>
             <li><router-link to="/events?category=Community" @click="closeMenu" class="dropdown-item"><span class="cat-dot" style="background: #ec4899;"></span> Community</router-link></li>
+          </ul>
+        </li>
+        <!-- Mobile: tap to toggle dropdown -->
+        <li class="mobile-only mobile-dropdown" :class="{ 'mobile-dropdown-open': isDropdownOpen }">
+          <a href="#" class="mobile-discover-trigger" @click.prevent="toggleDropdown">
+            Discover
+            <svg class="mobile-arrow" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4.5L6 8.5L10 4.5"/></svg>
+          </a>
+          <ul class="mobile-dropdown-menu">
+            <li><router-link to="/events?category=Festival" @click="closeMenu" class="mobile-cat-item"><span class="cat-dot" style="background: #f59e0b;"></span> Festivals</router-link></li>
+            <li><router-link to="/events?category=Music" @click="closeMenu" class="mobile-cat-item"><span class="cat-dot" style="background: #8b5cf6;"></span> Music</router-link></li>
+            <li><router-link to="/events?category=Sports" @click="closeMenu" class="mobile-cat-item"><span class="cat-dot" style="background: #22c55e;"></span> Sports</router-link></li>
+            <li><router-link to="/events?category=Community" @click="closeMenu" class="mobile-cat-item"><span class="cat-dot" style="background: #ec4899;"></span> Community</router-link></li>
           </ul>
         </li>
         <li><router-link to="/events" @click="closeMenu">Events</router-link></li>
@@ -244,6 +257,70 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
+/* Mobile/desktop visibility */
+.mobile-only {
+  display: none !important;
+}
+
+.mobile-discover-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mobile-arrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+  color: rgba(255, 255, 255, 0.45);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mobile-dropdown-open .mobile-arrow {
+  transform: rotate(180deg);
+  color: #0ea5e9;
+}
+
+.mobile-dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.mobile-dropdown-open .mobile-dropdown-menu {
+  max-height: 300px;
+}
+
+.mobile-cat-item {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.8rem 1.5rem 0.8rem 0rem !important;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mobile-cat-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #0ea5e9;
+}
+
 .mobile-toggle {
   display: none;
   flex-direction: column;
@@ -341,6 +418,19 @@ onUnmounted(() => {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
+  .mobile-dropdown-menu li {
+    border-bottom: none;
+  }
+
+  .mobile-cat-item {
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+
+  .mobile-cat-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
   .navbar-menu a {
     color: white;
     padding: 1rem 1.5rem;
@@ -355,47 +445,23 @@ onUnmounted(() => {
     color: #0ea5e9;
   }
 
-  /* Dropdown on mobile: always visible */
-  .dropdown-menu {
-    position: static;
-    opacity: 1;
-    visibility: visible;
-    max-height: none;
-    overflow: visible;
-    transform: none !important;
-    left: 0 !important;
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0.25rem 0;
-    min-width: unset;
-    border: none;
+  /* Dropdown on mobile: hide desktop dropdown, show flat items */
+  .desktop-only {
+    display: none !important;
   }
 
-  .dropdown-menu li {
-    border-bottom: none;
+  .mobile-only {
+    display: flex !important;
   }
 
-  .dropdown-item {
-    padding: 0.75rem 1.25rem 0.75rem 1.75rem !important;
-    gap: 0.6rem;
-    border-radius: 0 !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-size: 0.95rem;
+  .mobile-dropdown {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .cat-dot {
     width: 8px;
     height: 8px;
-  }
-
-  .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #0ea5e9;
-  }
-
-  .dropdown-trigger .arrow {
-    display: none;
   }
 }
 

@@ -81,7 +81,7 @@
         <div class="quick-actions">
           <h2>Quick Actions</h2>
           <div class="actions-grid">
-            <router-link to="/admin/events/create" class="action-card add-event">
+            <router-link to="/admin/events?action=create" class="action-card add-event">
               <div class="action-icon-wrapper">
                 <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="12" y1="5" x2="12" y2="19"/>

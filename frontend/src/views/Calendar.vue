@@ -176,7 +176,7 @@ const closeModal = () => {
 }
 
 .page-header {
-  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  background: linear-gradient(135deg, #1e293b, #0f172a);
   padding: 4rem 0;
   color: white;
   text-align: center;

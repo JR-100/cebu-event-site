@@ -66,13 +66,13 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <h1>Events Management</h1>
-        <router-link to="/admin/events/create" class="add-btn">
+        <button @click="openCreateModal" class="add-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="5" x2="12" y2="19"/>
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
           Add New Event
-        </router-link>
+        </button>
       </header>
 
       <div class="page-content">
@@ -145,12 +145,12 @@
                 </td>
                 <td>
                   <div class="actions">
-                    <router-link :to="`/admin/events/${event.id}/edit`" class="action-btn edit" title="Edit">
+                    <button @click="openEditModal(event)" class="action-btn edit" title="Edit">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                       </svg>
-                    </router-link>
+                    </button>
                     <button @click="confirmDelete(event)" class="action-btn delete" title="Delete">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="delete-icon">
                         <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339C55.5 487.8 73.8 512 100 512h248c26.2 0 44.5-24.2 46.8-45l21.2-339zM160 192v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm96 0v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm96 0v224c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
@@ -200,6 +200,94 @@
       </div>
     </main>
 
+    <!-- Event Form Modal (Create/Edit) -->
+    <div v-if="showFormModal" class="modal-overlay" @click.self="closeFormModal">
+      <div class="modal-content form-modal">
+        <div class="form-modal-header">
+          <h3>{{ editingEvent ? 'Edit Event' : 'Create New Event' }}</h3>
+          <button @click="closeFormModal" class="modal-close-btn">&times;</button>
+        </div>
+
+        <form @submit.prevent="handleFormSubmit" class="event-form-modal">
+          <div v-if="formError" class="error-message">{{ formError }}</div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="modal_name">Event Name *</label>
+              <input type="text" id="modal_name" v-model="form.name" placeholder="Enter event name" :class="{ 'error': formErrors.name }" />
+              <span v-if="formErrors.name" class="field-error">{{ formErrors.name }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="modal_category">Category *</label>
+              <select id="modal_category" v-model="form.category" :class="{ 'error': formErrors.category }">
+                <option value="">Select category</option>
+                <option value="Festival">Festival</option>
+                <option value="Music">Music</option>
+                <option value="Sports">Sports</option>
+                <option value="Community">Community</option>
+              </select>
+              <span v-if="formErrors.category" class="field-error">{{ formErrors.category }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="modal_date_time">Date & Time *</label>
+              <input type="datetime-local" id="modal_date_time" v-model="form.date_time" :class="{ 'error': formErrors.date_time }" />
+              <span v-if="formErrors.date_time" class="field-error">{{ formErrors.date_time }}</span>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="modal_location">Location *</label>
+              <input type="text" id="modal_location" v-model="form.location" placeholder="Enter venue/location" :class="{ 'error': formErrors.location }" />
+              <span v-if="formErrors.location" class="field-error">{{ formErrors.location }}</span>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="modal_description">Description *</label>
+              <textarea id="modal_description" v-model="form.description" placeholder="Describe the event..." rows="4" :class="{ 'error': formErrors.description }"></textarea>
+              <span v-if="formErrors.description" class="field-error">{{ formErrors.description }}</span>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Event Image</label>
+              <div class="image-upload">
+                <div v-if="imagePreview || currentImage" class="image-preview">
+                  <img :src="imagePreview || `http://localhost:8000/storage/${currentImage}`" alt="Preview" />
+                  <button type="button" @click="removeImage" class="remove-image">&times;</button>
+                </div>
+                <div v-else class="upload-placeholder" @click="$refs.formFileInput.click()">
+                  <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <path d="M21 15l-5-5L5 21"/>
+                  </svg>
+                  <span>Click to upload image</span>
+                  <span class="upload-hint">JPEG, PNG, GIF, WEBP (max 2MB)</span>
+                </div>
+                <input type="file" ref="formFileInput" @change="handleImageChange" accept="image/jpeg,image/png,image/gif,image/webp" hidden />
+              </div>
+              <span v-if="formErrors.image" class="field-error">{{ formErrors.image }}</span>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" v-model="form.is_featured" />
+                <span class="checkmark"></span>
+                Mark as Featured Event
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" @click="closeFormModal" class="cancel-btn">Cancel</button>
+            <button type="submit" class="submit-btn" :disabled="submitting">
+              {{ submitting ? 'Saving...' : (editingEvent ? 'Update Event' : 'Create Event') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div v-if="deleteModal" class="modal-overlay" @click.self="deleteModal = null">
       <div class="modal-content delete-modal">
@@ -228,10 +316,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import api from '../../api/axios';
 
 const router = useRouter();
+const route = useRoute();
 const sidebarOpen = ref(false);
 
 const events = ref([]);
@@ -243,6 +332,136 @@ const deleteModal = ref(null);
 const deleting = ref(false);
 
 const defaultImage = 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=100';
+
+// Form modal state
+const showFormModal = ref(false);
+const editingEvent = ref(null);
+const formFileInput = ref(null);
+const submitting = ref(false);
+const formError = ref('');
+const formErrors = ref({});
+const imageFile = ref(null);
+const imagePreview = ref(null);
+const currentImage = ref(null);
+
+const form = ref({
+  name: '',
+  description: '',
+  date_time: '',
+  location: '',
+  category: '',
+  is_featured: false
+});
+
+const resetForm = () => {
+  form.value = { name: '', description: '', date_time: '', location: '', category: '', is_featured: false };
+  imageFile.value = null;
+  imagePreview.value = null;
+  currentImage.value = null;
+  formError.value = '';
+  formErrors.value = {};
+  editingEvent.value = null;
+};
+
+const openCreateModal = () => {
+  resetForm();
+  showFormModal.value = true;
+};
+
+const openEditModal = async (event) => {
+  resetForm();
+  editingEvent.value = event;
+  try {
+    const response = await api.get(`/admin/events/${event.id}`);
+    const ev = response.data;
+    const date = new Date(ev.date_time);
+    const formattedDate = date.toISOString().slice(0, 16);
+    form.value = {
+      name: ev.name,
+      description: ev.description,
+      date_time: formattedDate,
+      location: ev.location,
+      category: ev.category,
+      is_featured: ev.is_featured
+    };
+    currentImage.value = ev.image;
+  } catch (err) {
+    formError.value = 'Failed to load event data';
+  }
+  showFormModal.value = true;
+};
+
+const closeFormModal = () => {
+  showFormModal.value = false;
+  resetForm();
+};
+
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) {
+      formErrors.value.image = 'Image size must be less than 2MB';
+      return;
+    }
+    imageFile.value = file;
+    const reader = new FileReader();
+    reader.onload = (ev) => { imagePreview.value = ev.target.result; };
+    reader.readAsDataURL(file);
+    formErrors.value.image = null;
+  }
+};
+
+const removeImage = () => {
+  imageFile.value = null;
+  imagePreview.value = null;
+  currentImage.value = null;
+};
+
+const validateForm = () => {
+  formErrors.value = {};
+  if (!form.value.name.trim()) formErrors.value.name = 'Event name is required';
+  if (!form.value.category) formErrors.value.category = 'Category is required';
+  if (!form.value.date_time) formErrors.value.date_time = 'Date and time is required';
+  if (!form.value.location.trim()) formErrors.value.location = 'Location is required';
+  if (!form.value.description.trim()) formErrors.value.description = 'Description is required';
+  return Object.keys(formErrors.value).length === 0;
+};
+
+const handleFormSubmit = async () => {
+  if (!validateForm()) { formError.value = 'Please fix the errors above'; return; }
+  submitting.value = true;
+  formError.value = '';
+  try {
+    const formData = new FormData();
+    formData.append('name', form.value.name);
+    formData.append('description', form.value.description);
+    formData.append('date_time', form.value.date_time);
+    formData.append('location', form.value.location);
+    formData.append('category', form.value.category);
+    formData.append('is_featured', form.value.is_featured ? '1' : '0');
+    if (imageFile.value) formData.append('image', imageFile.value);
+
+    if (editingEvent.value) {
+      await api.post(`/admin/events/${editingEvent.value.id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    } else {
+      await api.post('/admin/events', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    }
+    closeFormModal();
+    fetchEvents();
+  } catch (err) {
+    if (err.response?.data?.errors) {
+      formErrors.value = {};
+      Object.keys(err.response.data.errors).forEach(key => {
+        formErrors.value[key] = err.response.data.errors[key][0];
+      });
+      formError.value = 'Please fix the errors above';
+    } else {
+      formError.value = err.response?.data?.message || 'An error occurred. Please try again.';
+    }
+  } finally {
+    submitting.value = false;
+  }
+};
 
 let searchTimeout = null;
 
@@ -342,6 +561,12 @@ const logout = async () => {
 
 onMounted(() => {
   fetchEvents();
+  // Auto-open create modal if navigated with ?action=create (e.g., from Dashboard)
+  if (route.query.action === 'create') {
+    openCreateModal();
+    // Clean up the URL
+    router.replace({ path: '/admin/events' });
+  }
 });
 </script>
 
@@ -463,6 +688,9 @@ onMounted(() => {
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
   color: white;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
   border-radius: 10px;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -668,10 +896,14 @@ onMounted(() => {
 .action-btn.edit {
   background: #dbeafe;
   color: #0ea5e9;
+  width: 48px;
 }
 
 .action-btn.edit svg {
   stroke: #0ea5e9;
+  width: 48px;
+
+
 }
 
 .action-btn.edit:hover {
@@ -785,6 +1017,279 @@ onMounted(() => {
   max-width: 400px;
   width: 100%;
   text-align: center;
+}
+
+/* Event Form Modal */
+.form-modal {
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.form-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.form-modal-header h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.modal-close-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.event-form-modal .error-message {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.event-form-modal .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.event-form-modal .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-form-modal .form-group.full-width {
+  grid-column: span 2;
+}
+
+.event-form-modal .form-group label {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.event-form-modal .form-group input,
+.event-form-modal .form-group select,
+.event-form-modal .form-group textarea {
+  padding: 0.75rem 0.875rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: white;
+  color: #1e293b;
+  transition: all 0.3s ease;
+}
+
+.event-form-modal .form-group input::placeholder,
+.event-form-modal .form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.event-form-modal .form-group input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(20%) sepia(10%) saturate(500%) hue-rotate(180deg);
+  opacity: 1;
+  font-size: 1.2rem;
+  padding: 4px;
+}
+
+.event-form-modal .form-group input:focus,
+.event-form-modal .form-group select:focus,
+.event-form-modal .form-group textarea:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.event-form-modal .form-group input.error,
+.event-form-modal .form-group select.error,
+.event-form-modal .form-group textarea.error {
+  border-color: #ef4444;
+}
+
+.event-form-modal .field-error {
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.event-form-modal .form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.event-form-modal .image-upload {
+  border: 2px dashed #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.event-form-modal .upload-placeholder {
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.event-form-modal .upload-placeholder:hover {
+  background: #f8fafc;
+}
+
+.event-form-modal .upload-icon {
+  width: 40px;
+  height: 40px;
+  color: #94a3b8;
+}
+
+.event-form-modal .upload-hint {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.event-form-modal .image-preview {
+  position: relative;
+}
+
+.event-form-modal .image-preview img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.event-form-modal .remove-image {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.event-form-modal .remove-image:hover {
+  background: #ef4444;
+}
+
+.event-form-modal .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #374151;
+}
+
+.event-form-modal .checkbox-label input {
+  display: none;
+}
+
+.event-form-modal .checkmark {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.event-form-modal .checkbox-label input:checked + .checkmark {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+}
+
+.event-form-modal .checkbox-label input:checked + .checkmark::after {
+  content: '\2713';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+}
+
+.event-form-modal .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.event-form-modal .cancel-btn {
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 10px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.event-form-modal .cancel-btn:hover {
+  background: #f8fafc;
+}
+
+.event-form-modal .submit-btn {
+  padding: 0.75rem 1.75rem;
+  border: none;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.event-form-modal .submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+}
+
+.event-form-modal .submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .modal-icon {
@@ -950,6 +1455,20 @@ onMounted(() => {
   .add-btn svg {
     width: 16px;
     height: 16px;
+  }
+
+  .form-modal {
+    max-width: 95vw;
+    max-height: 85vh;
+    padding: 1.25rem;
+  }
+
+  .event-form-modal .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-form-modal .form-group.full-width {
+    grid-column: span 1;
   }
 }
 

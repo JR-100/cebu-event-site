@@ -543,6 +543,14 @@ onMounted(async () => {
   color: #94a3b8;
 }
 
+.form-group input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(20%) sepia(10%) saturate(500%) hue-rotate(180deg);
+  opacity: 1;
+  font-size: 1.2rem;
+  padding: 4px;
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {

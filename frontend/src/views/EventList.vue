@@ -2,8 +2,8 @@
   <div class="event-list-page">
     <div class="page-header">
       <div class="container">
-        <h1>Event List</h1>
-        <p>Browse all upcoming events in Cebu</p>
+        <h1>{{ selectedCategory !== 'all' ? selectedCategory + ' Events' : 'Event List' }}</h1>
+        <p>{{ selectedCategory !== 'all' ? `Browse all ${selectedCategory.toLowerCase()} events in Cebu` : 'Browse all upcoming events in Cebu' }}</p>
       </div>
     </div>
 
@@ -18,7 +18,7 @@
           />
         </div>
 
-        <select v-model="selectedCategory" @change="fetchEvents" class="category-select">
+        <select v-model="selectedCategory" @change="onCategoryChange" class="category-select">
           <option value="all">All Categories</option>
           <option v-for="category in categories" :key="category" :value="category">
             {{ category }}
@@ -111,8 +111,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import api from '../api/axios';
+
+const route = useRoute();
+const router = useRouter();
 
 const events = ref([]);
 const loading = ref(true);
@@ -143,6 +147,13 @@ const debouncedSearch = () => {
     currentPage.value = 1;
     fetchEvents();
   }, 300);
+};
+
+const onCategoryChange = () => {
+  currentPage.value = 1;
+  const query = selectedCategory.value !== 'all' ? { category: selectedCategory.value } : {};
+  router.replace({ path: '/events', query });
+  fetchEvents();
 };
 
 const changePage = (page) => {
@@ -196,7 +207,24 @@ const fetchEvents = async () => {
   }
 };
 
+const applyRouteCategory = () => {
+  const cat = route.query.category;
+  if (cat && categories.includes(cat)) {
+    selectedCategory.value = cat;
+  } else {
+    selectedCategory.value = 'all';
+  }
+};
+
 onMounted(() => {
+  applyRouteCategory();
+  fetchEvents();
+});
+
+// Watch for route query changes (e.g. clicking a different category in the navbar)
+watch(() => route.query.category, () => {
+  applyRouteCategory();
+  currentPage.value = 1;
   fetchEvents();
 });
 </script>
