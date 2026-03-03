@@ -585,7 +585,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   position: fixed;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .sidebar-header {
@@ -647,6 +649,7 @@ onMounted(() => {
 .sidebar-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.5rem 0;
+  margin-top: auto;
 }
 
 .logout-btn {
