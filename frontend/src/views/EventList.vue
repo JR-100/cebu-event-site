@@ -3,7 +3,7 @@
     <div class="page-header">
       <div class="container">
         <h1>{{ selectedCategory !== 'all' ? selectedCategory + ' Events' : 'Event List' }}</h1>
-        <p>{{ selectedCategory !== 'all' ? `Browse all ${selectedCategory.toLowerCase()} events in Cebu` : 'Browse all upcoming events in Cebu' }}</p>
+        <p>{{ selectedCategory !== 'all' ? `Browse all ${selectedCategory.toLowerCase()} events in Cebu` : 'Browse all events in Cebu' }}</p>
       </div>
     </div>
 
@@ -38,17 +38,25 @@
       </div>
 
       <div v-else class="events-list">
-        <div
-          v-for="event in events"
-          :key="event.id"
-          class="event-list-item"
-        >
+        <template v-for="(event, index) in events" :key="event.id">
+          <!-- Section divider between upcoming and past -->
+          <div v-if="showUpcomingLabel(index)" class="section-label upcoming-label">
+            <span>Upcoming Events</span>
+          </div>
+          <div v-if="showPastLabel(index)" class="section-label past-label">
+            <span>Past Events</span>
+          </div>
+
+          <div class="event-list-item" :class="{ 'past-event': isPast(event) }">
           <div class="event-image">
             <img
               :src="event.image ? `http://localhost:8000/storage/${event.image}` : defaultImage"
               :alt="event.name"
             />
             <span v-if="event.is_featured" class="featured-badge">⭐ Featured</span>
+            <span class="status-badge" :class="isPast(event) ? 'past' : 'upcoming'">
+              {{ isPast(event) ? 'Past' : 'Upcoming' }}
+            </span>
           </div>
 
           <div class="event-details">
@@ -73,7 +81,8 @@
               View Details
             </router-link>
           </div>
-        </div>
+          </div>
+        </template>
       </div>
 
       <!-- Pagination -->
@@ -187,6 +196,8 @@ const fetchEvents = async () => {
     const params = {
       page: currentPage.value,
       per_page: 10,
+      upcoming: false,
+      sort: 'upcoming_first',
     };
 
     if (selectedCategory.value !== 'all') {
@@ -214,6 +225,25 @@ const applyRouteCategory = () => {
   } else {
     selectedCategory.value = 'all';
   }
+};
+
+const isPast = (event) => {
+  return new Date(event.date_time) < new Date();
+};
+
+const showUpcomingLabel = (index) => {
+  // Show "Upcoming Events" label before the first upcoming event (only on page 1)
+  if (currentPage.value !== 1) return false;
+  if (index !== 0) return false;
+  return !isPast(events.value[0]);
+};
+
+const showPastLabel = (index) => {
+  // Show "Past Events" label at the transition point
+  const event = events.value[index];
+  if (!isPast(event)) return false;
+  if (index === 0) return currentPage.value === 1;
+  return !isPast(events.value[index - 1]);
 };
 
 onMounted(() => {
@@ -360,6 +390,55 @@ watch(() => route.query.category, () => {
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.status-badge.upcoming {
+  background: rgba(34, 197, 94, 0.9);
+  color: white;
+}
+
+.status-badge.past {
+  background: rgba(100, 116, 139, 0.85);
+  color: white;
+}
+
+.section-label {
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+}
+
+.section-label.upcoming-label {
+  background: #ecfdf5;
+  color: #166534;
+  border-left: 4px solid #22c55e;
+}
+
+.section-label.past-label {
+  background: #f1f5f9;
+  color: #475569;
+  border-left: 4px solid #94a3b8;
+}
+
+.event-list-item.past-event {
+  opacity: 0.7;
+}
+
+.event-list-item.past-event:hover {
+  opacity: 1;
 }
 
 .event-details {

@@ -34,6 +34,11 @@ class EventController extends Controller
         // Only upcoming events by default
         if ($request->boolean('upcoming', true)) {
             $query->upcoming();
+        } elseif ($request->get('sort') === 'upcoming_first') {
+            // Show all events, upcoming first (nearest future first), then past (most recent first)
+            $query->orderByRaw("CASE WHEN date_time >= datetime('now') THEN 0 ELSE 1 END")
+                  ->orderByRaw("CASE WHEN date_time >= datetime('now') THEN date_time END ASC")
+                  ->orderByRaw("CASE WHEN date_time < datetime('now') THEN date_time END DESC");
         } else {
             $query->orderBy('date_time', 'desc');
         }
