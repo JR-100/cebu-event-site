@@ -15,12 +15,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create admin user
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@cebuevents.com',
-            'password' => Hash::make('password123'),
-            'is_admin' => true,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@cebuevents.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('password123'),
+                'is_admin' => true,
+            ]
+        );
 
         // Sample events
         $events = [
@@ -123,7 +125,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($events as $event) {
-            Event::create($event);
+            Event::firstOrCreate(
+                ['name' => $event['name']],
+                $event
+            );
         }
     }
 }

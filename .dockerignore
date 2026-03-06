@@ -1,0 +1,14 @@
+.git
+.env
+node_modules
+storage/app/public/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+tests
+.editorconfig
+.gitattributes
+.gitignore
+README.md
+phpunit.xml
