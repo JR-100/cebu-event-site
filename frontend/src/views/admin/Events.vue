@@ -114,7 +114,7 @@
                 <td>
                   <div class="event-cell">
                     <img
-                      :src="event.image ? `http://localhost:8000/storage/${event.image}` : defaultImage"
+                      :src="event.image ? `${import.meta.env.VITE_API_URL}/storage/${event.image}` : defaultImage"
                       :alt="event.name"
                       class="event-thumb"
                     />
@@ -252,7 +252,7 @@
               <label>Event Image</label>
               <div class="image-upload">
                 <div v-if="imagePreview || currentImage" class="image-preview">
-                  <img :src="imagePreview || `http://localhost:8000/storage/${currentImage}`" alt="Preview" />
+                  <img :src="imagePreview || `${import.meta.env.VITE_API_URL}/storage/${currentImage}`" alt="Preview" />
                   <button type="button" @click="removeImage" class="remove-image">&times;</button>
                 </div>
                 <div v-else class="upload-placeholder" @click="$refs.formFileInput.click()">

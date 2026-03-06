@@ -63,7 +63,7 @@
 
         <div class="modal-image">
           <img
-            :src="modalEvent.image ? `http://localhost:8000/storage/${modalEvent.image}` : defaultImage"
+            :src="modalEvent.image ? `${import.meta.env.VITE_API_URL}/storage/${modalEvent.image}` : defaultImage"
             :alt="modalEvent.name"
           />
           <span v-if="modalEvent.is_featured" class="featured-badge">⭐ Featured</span>

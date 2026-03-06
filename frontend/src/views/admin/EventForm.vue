@@ -143,7 +143,7 @@
               <label for="image">Event Image</label>
               <div class="image-upload">
                 <div v-if="imagePreview || currentImage" class="image-preview">
-                  <img :src="imagePreview || `http://localhost:8000/storage/${currentImage}`" alt="Preview" />
+                  <img :src="imagePreview || `${import.meta.env.VITE_API_URL}/storage/${currentImage}`" alt="Preview" />
                   <button type="button" @click="removeImage" class="remove-image">×</button>
                 </div>
                 <div v-else class="upload-placeholder" @click="triggerFileInput">

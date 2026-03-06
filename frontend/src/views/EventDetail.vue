@@ -15,7 +15,7 @@
       <!-- Hero Image -->
       <div class="event-hero">
         <img
-          :src="event.image ? `http://localhost:8000/storage/${event.image}` : defaultImage"
+          :src="event.image ? `${import.meta.env.VITE_API_URL}/storage/${event.image}` : defaultImage"
           :alt="event.name"
         />
         <div class="hero-overlay"></div>

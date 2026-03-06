@@ -50,7 +50,7 @@
           <div class="event-list-item" :class="{ 'past-event': isPast(event) }">
           <div class="event-image">
             <img
-              :src="event.image ? `http://localhost:8000/storage/${event.image}` : defaultImage"
+              :src="event.image ? `${import.meta.env.VITE_API_URL}/storage/${event.image}` : defaultImage"
               :alt="event.name"
             />
             <span v-if="event.is_featured" class="featured-badge">⭐ Featured</span>

@@ -67,7 +67,7 @@
         </button>
         <h1>Dashboard</h1>
         <div class="user-info">
-          <img v-if="user?.profile_image" :src="`http://localhost:8000/storage/${user.profile_image}`" alt="Profile" class="header-avatar" />
+          <img v-if="user?.profile_image" :src="`${import.meta.env.VITE_API_URL}/storage/${user.profile_image}`" alt="Profile" class="header-avatar" />
           <svg v-else class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>

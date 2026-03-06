@@ -72,7 +72,7 @@
         <!-- Profile Info Card -->
         <div class="profile-card">
           <div class="profile-avatar" @click="triggerImageUpload">
-            <img v-if="imagePreview || profile.profile_image" :src="imagePreview || `http://localhost:8000/storage/${profile.profile_image}`" alt="Profile" class="avatar-img" />
+            <img v-if="imagePreview || profile.profile_image" :src="imagePreview || `${import.meta.env.VITE_API_URL}/storage/${profile.profile_image}`" alt="Profile" class="avatar-img" />
             <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
