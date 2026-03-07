@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Auto-set APP_URL from Render's environment
+if [ -n "$RENDER_EXTERNAL_URL" ]; then
+    export APP_URL="$RENDER_EXTERNAL_URL"
+fi
+
 echo "==> Caching configuration..."
 php artisan config:cache
 php artisan route:cache
