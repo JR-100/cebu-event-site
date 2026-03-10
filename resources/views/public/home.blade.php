@@ -64,13 +64,29 @@
                     <span class="category-icon">🎉</span>
                     <h3>Festival</h3>
                 </a>
+                <a href="{{ url('/events?category=Food') }}" class="category-card" style="background: linear-gradient(135deg, #f97316, #ea580c)">
+                    <span class="category-icon">🍽️</span>
+                    <h3>Food</h3>
+                </a>
                 <a href="{{ url('/events?category=Music') }}" class="category-card" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9)">
                     <span class="category-icon">🎵</span>
                     <h3>Music</h3>
                 </a>
+                <a href="{{ url('/events?category=Workshop') }}" class="category-card" style="background: linear-gradient(135deg, #0ea5e9, #0284c7)">
+                    <span class="category-icon">🛠️</span>
+                    <h3>Workshop</h3>
+                </a>
                 <a href="{{ url('/events?category=Sports') }}" class="category-card" style="background: linear-gradient(135deg, #22c55e, #16a34a)">
                     <span class="category-icon">⚽</span>
                     <h3>Sports</h3>
+                </a>
+                <a href="{{ url('/events?category=Art') }}" class="category-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
+                    <span class="category-icon">🎨</span>
+                    <h3>Art</h3>
+                </a>
+                <a href="{{ url('/events?category=Business') }}" class="category-card" style="background: linear-gradient(135deg, #64748b, #475569)">
+                    <span class="category-icon">💼</span>
+                    <h3>Business</h3>
                 </a>
                 <a href="{{ url('/events?category=Community') }}" class="category-card" style="background: linear-gradient(135deg, #ec4899, #db2777)">
                     <span class="category-icon">🤝</span>
